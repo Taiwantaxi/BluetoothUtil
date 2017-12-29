@@ -1,0 +1,6 @@
+framework module MHToolKit_Framwork {
+  umbrella header "MHToolKit_Framwork.h"
+
+  export *
+  module * { export * }
+}
