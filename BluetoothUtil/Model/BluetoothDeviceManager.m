@@ -147,6 +147,101 @@ static BluetoothDeviceManager *instance = nil;
     return result;
 }
 
+-(void)readBluetoothDataHandler:(NSData *)data{
+    
+    NSLog(@"%s", __FUNCTION__);
+    
+    if(self.bluetoothStreamData){
+        
+        if(self.bluetoothStreamData.complete){
+            
+            //上ㄧ包封包已是完整封包 重新New一個
+            self.bluetoothStreamData = nil;
+            self.bluetoothStreamData = [[BluetoothStreamData alloc] initWithData:data];
+            
+        }else{
+            
+            //上一個封包 非完整封包 繼續加入資料
+            [self.bluetoothStreamData updateData:data withIsInitial:NO];
+            
+        }
+        
+    }else{
+        
+        self.bluetoothStreamData = [[BluetoothStreamData alloc] initWithData:data];
+        
+    }
+    
+    if(!self.bluetoothStreamData.complete){
+        //非完整封包
+        
+        
+    }else{
+        
+        //更新完資料後為完整封包
+        
+        Byte BluetoothAPIFunction1 = 0xc1;  //按下空白鍵       (輸出計費表最後一次載客紀錄資料)
+        Byte BluetoothAPIFunction2 = 0xc2;  //按下計程計時鍵    (輸出計費表當前狀態資料)
+        Byte BluetoothAPIFunction3 = 0xb4;  //按下列印鍵       (輸出計費表每趟結束後載客資料)
+
+        if([self.bluetoothStreamData.dataDocumentId isEqualToData:[NSData dataWithBytes:&BluetoothAPIFunction1 length:sizeof(BluetoothAPIFunction1)]]){
+            
+            NSLog(@" Find 0xc1 ");
+            
+            if(self.delegate){
+                if([self.delegate respondsToSelector:@selector(getCarMeterActivity)]){
+                    [self.delegate getCarMeterActivity];
+                }
+            }
+            
+            //待撰寫
+            
+        }else if([self.bluetoothStreamData.dataDocumentId isEqualToData:[NSData dataWithBytes:&BluetoothAPIFunction2 length:sizeof(BluetoothAPIFunction2)]]){
+            
+            NSLog(@" Find 0xc2 ");
+            
+            if(self.delegate){
+                if([self.delegate respondsToSelector:@selector(getCarMeterStartTiming)]){
+                    [self.delegate getCarMeterStartTiming];
+                }
+            }
+            //待撰寫
+            
+        }else if([self.bluetoothStreamData.dataDocumentId isEqualToData:[NSData dataWithBytes:&BluetoothAPIFunction3 length:sizeof(BluetoothAPIFunction3)]]){
+            
+            NSLog(@" Find 0xb4 ");
+            
+            //解析車資
+            NSInteger metterPrice = -1;
+            metterPrice = [self getCarMeterPrice:self.bluetoothStreamData.dataBody];
+            
+            if(self.delegate){
+                if([self.delegate respondsToSelector:@selector(getCarMeterEndPrice:)]){
+                    [self.delegate getCarMeterEndPrice:metterPrice];
+                }
+            }
+            
+        }else{
+            
+            NSLog(@"Not define this function");
+            
+        }
+        
+    }
+    
+    
+}
+
+-(NSInteger)getCarMeterPrice:(NSMutableData *) data{
+    
+    //依規格，車資為 28..29 bit
+    NSRange rangeData = NSMakeRange(28, 2);
+    NSData *dataTarget = [data subdataWithRange:rangeData];
+    
+    return dataTarget.hash;
+    
+}
+
 #pragma mark - CBCentralManagerDelegate
 
 -(void)centralManagerDidUpdateState:(CBCentralManager *)central{
@@ -288,14 +383,22 @@ static BluetoothDeviceManager *instance = nil;
 -(void)peripheral:(CBPeripheral *)peripheral didUpdateValueForCharacteristic:(CBCharacteristic *)characteristic error:(NSError *)error{
     
     //收到最新的特徵值資料
+    NSLog(@"%s, bluetoothData = %@", __FUNCTION__, [characteristic description]);
     
     NSData *sensorData = [characteristic value];
     
+    if(sensorData){
+        
+        [self readBluetoothDataHandler:sensorData];
+        
+    }
+    
+    /*
     if(self.delegate){
         if([self.delegate respondsToSelector:@selector(getUpdateValueForCharacteristic:)]){
             [self.delegate getUpdateValueForCharacteristic:sensorData];
         }
     }
-    
+    */
 }
 @end

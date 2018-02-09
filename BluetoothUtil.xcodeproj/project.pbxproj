@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4F41101F1FFC8E820043F514 /* BluetoothStreamData.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F41101E1FFC8E820043F514 /* BluetoothStreamData.m */; };
 		4F4819BE1FF5E5DD00B3F915 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4819BD1FF5E5DD00B3F915 /* main.m */; };
 		4F4819C11FF5E5DD00B3F915 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 4F4819C01FF5E5DD00B3F915 /* AppDelegate.m */; };
 		4F4819C91FF5E5DD00B3F915 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F4819C81FF5E5DD00B3F915 /* Assets.xcassets */; };
@@ -19,6 +20,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4F41101D1FFC8E820043F514 /* BluetoothStreamData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BluetoothStreamData.h; sourceTree = "<group>"; };
+		4F41101E1FFC8E820043F514 /* BluetoothStreamData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BluetoothStreamData.m; sourceTree = "<group>"; };
 		4F4819B91FF5E5DD00B3F915 /* BluetoothUtil.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BluetoothUtil.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F4819BD1FF5E5DD00B3F915 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4F4819BF1FF5E5DD00B3F915 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -116,6 +119,8 @@
 				4F4819E61FF610A400B3F915 /* BluetoothDevice.m */,
 				4F4819E21FF6108700B3F915 /* BluetoothDeviceManager.h */,
 				4F4819E31FF6108700B3F915 /* BluetoothDeviceManager.m */,
+				4F41101D1FFC8E820043F514 /* BluetoothStreamData.h */,
+				4F41101E1FFC8E820043F514 /* BluetoothStreamData.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -199,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4F4819E71FF610A400B3F915 /* BluetoothDevice.m in Sources */,
+				4F41101F1FFC8E820043F514 /* BluetoothStreamData.m in Sources */,
 				4F4819DC1FF5E6C200B3F915 /* UIView+Toast.m in Sources */,
 				4F4819E41FF6108700B3F915 /* BluetoothDeviceManager.m in Sources */,
 				4F4819D91FF5E69300B3F915 /* ViewController.m in Sources */,

@@ -12,6 +12,8 @@
 
 #import "BluetoothDevice.h"
 
+#import "BluetoothStreamData.h"
+
 #define kBluetoothDeviceManager                 [BluetoothDeviceManager sharedInstance]
 
 @protocol BluetoothDeviceManagerDelegate <NSObject>
@@ -58,6 +60,21 @@
  */
 -(void)getUpdateValueForCharacteristic:(NSData *) data;
 
+/**
+ * @brief 收到車錶啟動
+ */
+-(void)getCarMeterActivity;
+
+/**
+ * @brief 收到車錶開始計時
+ */
+-(void)getCarMeterStartTiming;
+
+/**
+ * @brief 收到車錶結束車資
+ */
+-(void)getCarMeterEndPrice:(NSInteger) price;
+
 @end
 
 
@@ -87,6 +104,11 @@
  * @brief Bluetooth 中心
  */
 @property (nonatomic, strong) CBCentralManager *CM;
+
+/**
+ * @brief Bluetooth Stream 資料
+ */
+@property (nonatomic, strong) BluetoothStreamData *bluetoothStreamData;
 
 #pragma mark - public function
 

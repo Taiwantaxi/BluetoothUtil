@@ -215,8 +215,8 @@
     for(CBService *service in arrayCBService){
         
         [self.view makeToast:[service.UUID description]];
-        
-        if([[service.UUID description] containsString:@"Device Information"]){
+        //計費器 service UUID = 0003CDD0-0000-1000-8000-00805F9B0131
+        if([[service.UUID description] containsString:@"0003CDD0-0000-1000-8000-00805F9B0131"]){
             
             [kBluetoothDeviceManager startServiceDiscoverCharacteristic:service withPeripheral:peripheral];
             
@@ -230,8 +230,13 @@
     
     for (CBCharacteristic *c in arrayCharacteristic){
         
-        [self.view makeToast:[c description]];
-        [kBluetoothDeviceManager readCharacteristic:c withService:service withPeripheral:peripheral];
+        //計費器 Characteristic UUID = 0003CDD1-0000-1000-8000-00805F9B0131
+        if([[c.UUID description] containsString:@"0003CDD1-0000-1000-8000-00805F9B0131"]){
+            
+            [self.view makeToast:[c description]];
+            [kBluetoothDeviceManager readCharacteristic:c withService:service withPeripheral:peripheral];
+            
+        }
         
     }
     
@@ -245,8 +250,23 @@
     
 }
 
+-(void)getCarMeterActivity{
+    
+    [self.view makeToast:@"藍牙車錶啟動"];
+    
+}
 
+-(void)getCarMeterStartTiming{
+    
+    [self.view makeToast:@"藍牙車錶開始計費"];
+    
+}
 
+-(void)getCarMeterEndPrice:(NSInteger)price{
+    
+    [self.view makeToast:[NSString stringWithFormat:@"本趟車資已結束，車資為%zd", price]];
+    
+}
 
 
 @end
